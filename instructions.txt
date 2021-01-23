@@ -1,0 +1,6 @@
+1) Follow instructions at http://usefulangle.com/post/29/google-calendar-api-create-event-php to create a Google application
+2) Update Client Id, Secret & Redirect Url in settings.php
+3) Run google-login.php in the browser
+
+Last Updated 3rd Oct, 2017
+usefulangle.com
