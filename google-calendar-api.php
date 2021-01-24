@@ -2,6 +2,7 @@
 
 class GoogleCalendarApi
 {
+	// LOOK AT THIS - WHAT HAPPENS WHEN USER NOT LOGGED IN FOR A WHILE?
 	public function GetAccessToken($client_id, $redirect_uri, $client_secret, $code) {	
 		$url = 'https://accounts.google.com/o/oauth2/token';			
 		
@@ -57,10 +58,13 @@ class GoogleCalendarApi
 		return $data['items'];
 	}
 
+	// need to add repeat argument here
 	public function CreateCalendarEvent($calendar_id, $summary, $all_day, $event_time, $event_timezone, $access_token) {
 		$url_events = 'https://www.googleapis.com/calendar/v3/calendars/' . $calendar_id . '/events';
 
 		$curlPost = array('summary' => $summary);
+
+		// if event is an all day event or not 
 		if($all_day == 1) {
 			$curlPost['start'] = array('date' => $event_time['event_date']);
 			$curlPost['end'] = array('date' => $event_time['event_date']);

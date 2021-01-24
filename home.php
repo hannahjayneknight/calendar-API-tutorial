@@ -124,9 +124,11 @@ function AdjustMinTime(ct) {
 }
 
 // DateTimePicker plugin : http://xdsoft.net/jqplugins/datetimepicker/
+// sending jquery to get date
 $("#event-start-time, #event-end-time").datetimepicker({ format: 'Y-m-d H:i', minDate: 0, minTime: 0, step: 5, onShow: AdjustMinTime, onSelectDate: AdjustMinTime });
 $("#event-date").datetimepicker({ format: 'Y-m-d', timepicker: false, minDate: 0 });
 
+// hiding or showing extra buttons if exact time is chosen
 $("#event-type").on('change', function(e) {
 	if($(this).val() == 'ALL-DAY') {
 		$("#event-date").show();
@@ -190,6 +192,7 @@ $("#create-update-event").on('click', function(e) {
 					},
 					all_day: $("#event-type").val() == 'ALL-DAY' ? 1 : 0,
 					operation: $(this).attr('data-operation'),
+					// recurance:
 					event_id: $(this).attr('data-operation') == 'create' ? null : $(this).attr('data-event-id')
 				};
 
