@@ -56,11 +56,23 @@ select {
 	display: none;
 }
 
-#create-event {
+#create-update-event {
 	background: none;
 	width: 100%;
     display: block;
     margin: 0 auto;
+    border: 2px solid #2980b9;
+    padding: 8px;
+    background: none;
+    color: #2980b9;
+    cursor: pointer;
+}
+
+#delete-event {
+	background: none;
+	width: 100%;
+    display: block;
+    margin: 20px auto 0 auto;
     border: 2px solid #2980b9;
     padding: 8px;
     background: none;
@@ -79,10 +91,17 @@ select {
 		<option value="FIXED-TIME">Fixed Time Event</option>
 		<option value="ALL-DAY">All Day Event</option>
 	</select>
+	<select id="repeat-options"  autocomplete="off">
+		<option value="NEVER-REPEATS">Never repeats</option>
+		<option value="EVERY-DAY">Every day</option>
+		<option value="EVERY-WEEK">Every week</option>
+	</select>
 	<input type="text" id="event-start-time" placeholder="Event Start Time" autocomplete="off" />
 	<input type="text" id="event-end-time" placeholder="Event End Time" autocomplete="off" />
 	<input type="text" id="event-date" placeholder="Event Date" autocomplete="off" />
-	<button id="create-event">Create Event</button>
+	<button id="create-update-event" data-operation="create" data-event-id="">Create Event</button>
+	
+	<button id="delete-event" style="display:none">Delete Event</button>
 </div>
 
 <script>
@@ -120,10 +139,7 @@ $("#event-type").on('change', function(e) {
 });
 
 // Send an ajax request to create event
-$("#create-event").on('click', function(e) {
-	if($("#create-event").attr('data-in-progress') == 1)
-		return;
-
+$("#create-update-event").on('click', function(e) {
 	var blank_reg_exp = /^([\s]{0,}[^\s]{1,}[\s]{0,}){1,}$/,
 		error = 0,
 		parameters;
@@ -165,7 +181,7 @@ $("#create-event").on('click', function(e) {
 		}
 	}
 
-	// Event details
+	// Event details - NEED TO ADD RECURRANCE HERE!
 	parameters = { 	title: $("#event-title").val(), 
 					event_time: {
 						start_time: $("#event-type").val() == 'FIXED-TIME' ? $("#event-start-time").val().replace(' ', 'T') + ':00' : null,
@@ -173,20 +189,60 @@ $("#create-event").on('click', function(e) {
 						event_date: $("#event-type").val() == 'ALL-DAY' ? $("#event-date").val() : null
 					},
 					all_day: $("#event-type").val() == 'ALL-DAY' ? 1 : 0,
+					operation: $(this).attr('data-operation'),
+					event_id: $(this).attr('data-operation') == 'create' ? null : $(this).attr('data-event-id')
 				};
 
-	$("#create-event").attr('disabled', 'disabled');
+	$("#create-update-event").attr('disabled', 'disabled');
 	$.ajax({
         type: 'POST',
         url: 'ajax.php',
         data: { event_details: parameters },
         dataType: 'json',
         success: function(response) {
-        	$("#create-event").removeAttr('disabled');
-        	alert('Event created with ID : ' + response.event_id);
+        	$("#create-update-event").removeAttr('disabled');
+        	
+        	if(parameters.operation == 'create') {
+        		$("#create-update-event").text('Update Event').attr('data-event-id', response.event_id).attr('data-operation', 'update');
+        		$("#delete-event").show();
+        		alert('Event created with ID : ' + response.event_id);
+        	}
+        	else if(parameters.operation == 'update') {
+        		alert('Event ID ' + parameters.event_id + ' updated');
+        	}
         },
         error: function(response) {
-            $("#create-event").removeAttr('disabled');
+            $("#create-update-event").removeAttr('disabled');
+            alert(response.responseJSON.message);
+        }
+    });
+});
+
+// Send an ajax request to delete event
+$("#delete-event").on('click', function(e) {
+	// Event details
+	var parameters = { 	operation: 'delete',
+						event_id: $("#create-update-event").attr('data-event-id')
+					};
+
+	$("#create-update-event").attr('disabled', 'disabled');
+	$("#delete-event").attr('disabled', 'disabled');
+	$.ajax({
+        type: 'POST',
+        url: 'ajax.php',
+        data: { event_details: parameters },
+        dataType: 'json',
+        success: function(response) {
+        	$("#delete-event").removeAttr('disabled').hide();
+
+        	$("#form-container input").val('');
+        	$("#create-update-event").removeAttr('disabled');
+        	$("#create-update-event").text('Create Event').attr('data-event-id', '').attr('data-operation', 'create');
+
+        	alert('Event ID ' + parameters.event_id + ' deleted');
+        },
+        error: function(response) {
+            $("#delete-event").removeAttr('disabled');
             alert(response.responseJSON.message);
         }
     });
