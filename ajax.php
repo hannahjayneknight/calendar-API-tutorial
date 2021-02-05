@@ -18,10 +18,6 @@ try {
 			// Create event on primary calendar
 			$event_id = $capi->CreateCalendarEvent('primary', $event['title'], $event['all_day'],  $event['recurrence'], $event['event_time'], $_SESSION['user_timezone'], $_SESSION['access_token']);
 
-			// Get whether even repeats or not
-			// if(!isset($_SESSION['repeat_event']))
-				// $event_id->setRecurrence(array($_SESSION['repeat_event']));
-
 			echo json_encode([ 'event_id' => $event_id ]);
 			break;
 

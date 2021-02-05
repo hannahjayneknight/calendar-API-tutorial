@@ -93,14 +93,21 @@ select {
 	</select>
 	<p id="Repeat title"> Repeat: </p>
 	<select id="repeat-options"  autocomplete="off">
-		<option value="NEVER">Never</option>
 		<option value="EVERY-WEEK">Every week</option>
+		<option value="NEVER">Never</option>
 	</select>
+	<p id="Repeats-ending-title"> For how long would you like this event to repeat? </p>
+	<select id="repeat-ending-options"  autocomplete="off">
+		<option value="END-DATE">Select an end date.</option>
+		<option value="ONGOING">Repeat forever</option>
+	</select>
+
+	<input type="text" id="repeat-end-time" placeholder="Repeat Event End Time" autocomplete="off" />
 	<input type="text" id="event-start-time" placeholder="Event Start Time" autocomplete="off" />
 	<input type="text" id="event-end-time" placeholder="Event End Time" autocomplete="off" />
 	<input type="text" id="event-date" placeholder="Event Date" autocomplete="off" />
-	<button id="create-update-event" data-operation="create" data-event-id="">Create Event</button>
 	
+	<button id="create-update-event" data-operation="create" data-event-id="">Create Event</button>
 	<button id="delete-event" style="display:none">Delete Event</button>
 </div>
 
@@ -126,7 +133,7 @@ function AdjustMinTime(ct) {
 // DateTimePicker plugin : http://xdsoft.net/jqplugins/datetimepicker/
 // sending jquery to get date
 $("#event-start-time, #event-end-time").datetimepicker({ format: 'Y-m-d H:i', minDate: 0, minTime: 0, step: 5, onShow: AdjustMinTime, onSelectDate: AdjustMinTime });
-$("#event-date").datetimepicker({ format: 'Y-m-d', timepicker: false, minDate: 0 });
+$("#event-date, #repeat-end-time").datetimepicker({ format: 'Y-m-d', timepicker: false, minDate: 0 });
 
 // hiding or showing extra buttons if exact time is chosen
 $("#event-type").on('change', function(e) {
@@ -137,6 +144,30 @@ $("#event-type").on('change', function(e) {
 	else {
 		$("#event-date").hide(); 
 		$("#event-start-time, #event-end-time").show();
+	}
+});
+
+// hiding or showing extra buttons if repeat event is chosen
+$("#repeat-options").on('change', function(e) {
+	if($(this).val() == 'EVERY-WEEK') {
+		$("#Repeats-ending-title").show();// show title
+		$("#repeat-ending-options").show(); // show options
+		$("#repeat-end-time").show();
+	}
+	else {
+		$("#Repeats-ending-title").hide();// show title
+		$("#repeat-ending-options").hide(); // show options
+		$("#repeat-end-time").hide();
+	}
+});
+
+// hiding or showing extra buttons if an end date is chosen for a repeat event
+$("#repeat-ending-options").on('change', function(e) {
+	if($(this).val() == 'END-DATE') {
+		$("#repeat-end-time").show();// show option to chose end date
+	}
+	else {
+		$("#repeat-end-time").hide();
 	}
 });
 
