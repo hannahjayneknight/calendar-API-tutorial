@@ -58,7 +58,7 @@ class GoogleCalendarApi
 	}
 
 	// need to add repeat argument here
-	public function CreateCalendarEvent($calendar_id, $summary, $all_day, $recurrence, $event_time, $event_timezone, $access_token) {
+	public function CreateCalendarEvent($calendar_id, $summary, $all_day, $recurrence, $recurrence_end, $event_time, $event_timezone, $access_token) {
 		$url_events = 'https://www.googleapis.com/calendar/v3/calendars/' . $calendar_id . '/events';
 
 		$curlPost = array('summary' => $summary); // event title
@@ -74,14 +74,11 @@ class GoogleCalendarApi
 		}
 
 		// if event repeats or not
-		if ($recurrence != 0) {
+		if ($recurrence == 1) {
 			// repeats weekly until XXXX
-			// RRULE:FREQ=WEEKLY;UNTIL=19971224T000000Z
-			
+			// RRULE:FREQ=WEEKLY;UNTIL=XXXX
 
-			//$curlPost['recurrence'] = array("RRULE:FREQ=WEEKLY;UNTIL=" . ); // add end date here
-		} else {
-			// doesn't repeat weekly
+			$curlPost['recurrence'] = array("RRULE:FREQ=WEEKLY;UNTIL=" . str_replace('-', '', $recurrence_end) . ";" );
 		}
 
 

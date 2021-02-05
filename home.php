@@ -234,6 +234,8 @@ $("#create-update-event").on('click', function(e) {
 					all_day: $("#event-type").val() == 'ALL-DAY' ? 1 : 0,
 					operation: $(this).attr('data-operation'),
 					recurrence: $("#repeat-options").val() == 'EVERY-WEEK' ? 1 : 0, // returns 1 if event is set to repeat weekly
+					// returns a date in 2100 if set to ongoing, else returns the end date set by the user
+					recurrence_end: $("#repeat-ending-options").val() == 'ONGOING' ? "2100-01-01" : $("#repeat-end-time").val(),
 					event_id: $(this).attr('data-operation') == 'create' ? null : $(this).attr('data-event-id')
 				};
 
