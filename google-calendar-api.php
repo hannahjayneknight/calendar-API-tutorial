@@ -75,7 +75,13 @@ class GoogleCalendarApi
 
 		// if event repeats or not
 		if ($recurrence == 1) {
-			// repeats weekly
+			// repeats weekly until XXXX
+			// RRULE:FREQ=WEEKLY;UNTIL=19971224T000000Z
+
+			// repeats weekly forever
+			// RRULE:FREQ=WEEKLY;
+
+			$curlPost['recurrence'] = array("RRULE:FREQ=WEEKLY;");
 		} else {
 			// doesn't repeat weekly
 		}
