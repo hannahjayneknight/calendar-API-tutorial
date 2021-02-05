@@ -91,9 +91,9 @@ select {
 		<option value="FIXED-TIME">Fixed Time Event</option>
 		<option value="ALL-DAY">All Day Event</option>
 	</select>
+	<p id="Repeat title"> Repeat: </p>
 	<select id="repeat-options"  autocomplete="off">
-		<option value="NEVER-REPEATS">Never repeats</option>
-		<option value="EVERY-DAY">Every day</option>
+		<option value="NEVER">Never</option>
 		<option value="EVERY-WEEK">Every week</option>
 	</select>
 	<input type="text" id="event-start-time" placeholder="Event Start Time" autocomplete="off" />
@@ -142,13 +142,13 @@ $("#event-type").on('change', function(e) {
 
 // Send an ajax request to create event
 $("#create-update-event").on('click', function(e) {
-	var blank_reg_exp = /^([\s]{0,}[^\s]{1,}[\s]{0,}){1,}$/,
+	var blank_reg_exp = /^([\s]{0,}[^\s]{1,}[\s]{0,}){1,}$/, // creating a regular expression
 		error = 0,
 		parameters;
 
 	$(".input-error").removeClass('input-error');
 
-	if(!blank_reg_exp.test($("#event-title").val())) {
+	if(!blank_reg_exp.test($("#event-title").val())) { // testing regular expression against string
 		$("#event-title").addClass('input-error');
 		error = 1;
 	}
@@ -171,6 +171,16 @@ $("#create-update-event").on('click', function(e) {
 		}	
 	}
 
+	if($("#repeat-options").val() == 'EVERY-WEEK') { // only option is to repeat weekly
+		if(!blank_reg_exp.test($("#repeat-options").val())) {
+			$("#repeat-options").addClass('input-error');
+			error = 1;
+		}	
+	} else { // else event never repeats
+
+	} // HERE
+
+
 	if(error == 1)
 		return false;
 
@@ -192,7 +202,7 @@ $("#create-update-event").on('click', function(e) {
 					},
 					all_day: $("#event-type").val() == 'ALL-DAY' ? 1 : 0,
 					operation: $(this).attr('data-operation'),
-					// recurance:
+					recurrence: $("#repeat-options").val() == 'EVERY-WEEK' ? 1 : 0, // returns 1 if event is set to repeat weekly
 					event_id: $(this).attr('data-operation') == 'create' ? null : $(this).attr('data-event-id')
 				};
 
