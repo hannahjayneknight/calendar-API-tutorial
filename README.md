@@ -26,7 +26,7 @@ This is a fairly basic web-app that can perform the following functions:
 
 In the API setup on the Google Cloud Platform, I set my account to be a service account. This means during testing, Google does not prompt for access to my account every time.
 
-<img src="service_account.jpg" alt="Service account screenshot">
+<img src="images/service_account.jpg" alt="Service account screenshot">
 
 
 ## The access token
