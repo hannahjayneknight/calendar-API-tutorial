@@ -9,13 +9,12 @@ This is a fairly basic web-app that can perform the following functions:
 - The event can repeat indefinitely or until a certain date.
 
 
-<img src="login-page.jpg" alt="Option to log in" width="400">
-<img src="logging-in.jpg" alt="Logging in" width="400">
-<img src="home-page.jpg" alt="Home page" width="400">
-<img src="test.jpg" alt="Making an event" width="400">
-<img src="results-from-test.jpg" alt="After making an event" width="400">
-<img src="making-an-event.jpg" alt="Updating/ deleting an event" width="400">
-<img src="delete.jpg" alt="Deleted event" width="400">
+<img src="images/login-page.jpg" alt="Option to log in" width="400"> <nobr>
+<img src="images/logging-in.jpg" alt="Logging in" width="400">
+<img src="images/home-page.jpg" alt="Home page" width="400"> <nobr>
+<img src="images/test.jpg" alt="Making an event" width="400">
+<img src="images/results-from-test.jpg" alt="After making an event" width="400"> <nobr>
+<img src="images/making-an-event.jpg" alt="Updating/ deleting an event" width="400">
 
 ## Setup
 
